@@ -16,5 +16,6 @@ public class Main {
         UserService userService = applicationContext.getBean(UserService.class);
         userService.add(user1);
         System.out.println(userService.listUsers());
+        System.out.println(userService.findById(1L));
     }
 }
