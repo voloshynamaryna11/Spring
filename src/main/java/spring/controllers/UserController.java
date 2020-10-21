@@ -3,9 +3,8 @@ package spring.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import spring.dto.UserResponseDto;
 import spring.model.User;
@@ -20,8 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @ResponseBody
-    @GetMapping("/all")
+    @GetMapping
     public List<UserResponseDto> getAll() {
         List<UserResponseDto> list = new ArrayList<>();
         for (User user : userService.listUsers()) {
@@ -30,13 +28,11 @@ public class UserController {
         return list;
     }
 
-    @ResponseBody
-    @GetMapping
-    public UserResponseDto get(@RequestParam(name = "user_id") Long id) {
+    @GetMapping("/{id}")
+    public UserResponseDto get(@PathVariable Long id) {
         return mapFromUserToUserResponseDto(userService.findById(id));
     }
 
-    @ResponseBody
     @GetMapping("/inject")
     public String injectUsers() {
         User user1 = new User();
@@ -62,7 +58,7 @@ public class UserController {
         return "Success! Data already injected in DB";
     }
 
-    private static UserResponseDto mapFromUserToUserResponseDto(User user) {
+    private UserResponseDto mapFromUserToUserResponseDto(User user) {
         return new UserResponseDto(user.getName(), user.getEmail());
     }
 }
